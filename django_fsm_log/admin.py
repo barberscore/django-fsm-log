@@ -19,7 +19,7 @@ class StateLogInline(GenericTabularInline):
 
     fields = (
         'transition',
-        'state',
+        'get_state_display',
         'by',
         'timestamp',
     )

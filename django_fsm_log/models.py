@@ -44,5 +44,6 @@ class StateLog(models.Model):
         fsm_cls = self.content_type.model_class()
         for field in fsm_cls._meta.fields:
             if isinstance(field, FSMFieldMixin):
-                state_display = dict(field.flatchoices).get(self.state, self.state)
+                stringified = [tuple(map(str, t)) for t in field.flatchoices]
+                state_display = dict(stringified).get(self.state, self.state)
                 return force_text(state_display, strings_only=True)
