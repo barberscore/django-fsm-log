@@ -30,9 +30,13 @@ class StateLog(models.Model):
         get_latest_by = 'timestamp'
 
     def __str__(self):
-        return '{} - {} - {}'.format(
+        # return '{} - {} - {}'.format(
+        #     self.timestamp,
+        #     self.content_object,
+        #     self.transition
+        # )
+        return '{} - {}'.format(
             self.timestamp,
-            self.content_object,
             self.transition
         )
 
