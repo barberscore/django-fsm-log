@@ -10,6 +10,7 @@ __all__ = ('StateLogInline',)
 class StateLogInline(GenericTabularInline):
     model = StateLog
     can_delete = False
+    extra = 0
 
     def has_add_permission(self, request):
         return False
