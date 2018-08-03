@@ -1,5 +1,6 @@
 # -*- coding:utf-8 -*-
 from __future__ import unicode_literals
+import uuid
 
 from django.contrib.contenttypes.fields import GenericForeignKey
 from django.contrib.contenttypes.models import ContentType
@@ -14,29 +15,51 @@ from .managers import StateLogManager
 
 @python_2_unicode_compatible
 class StateLog(models.Model):
-    timestamp = models.DateTimeField(default=now)
-    by = models.ForeignKey(getattr(settings, 'AUTH_USER_MODEL', 'auth.User'), blank=True,
-                           null=True, on_delete=models.SET_NULL)
-    state = models.CharField(max_length=255, db_index=True)
-    transition = models.CharField(max_length=255)
-
-    content_type = models.ForeignKey(ContentType, on_delete=models.CASCADE)
-    object_id = models.CharField(db_index=True, max_length=64)
-    content_object = GenericForeignKey('content_type', 'object_id')
-
-    description = models.TextField(blank=True)
+    id = models.UUIDField(
+        primary_key=True,
+        default=uuid.uuid4,
+        editable=False,
+    )
+    timestamp = models.DateTimeField(
+        default=now,
+    )
+    by = models.ForeignKey(
+        getattr(settings, 'AUTH_USER_MODEL', 'auth.User'),
+        blank=True,
+        null=True,
+        on_delete=models.SET_NULL,
+    )
+    state = models.CharField(
+        max_length=255,
+        db_index=True,
+    )
+    transition = models.CharField(
+        max_length=255,
+    )
+    content_type = models.ForeignKey(
+        ContentType,
+        on_delete=models.CASCADE,
+    )
+    object_id = models.UUIDField(
+        db_index=True,
+    )
+    content_object = GenericForeignKey(
+        'content_type',
+        'object_id'
+    )
+    description = models.TextField(
+        blank=True,
+    )
 
     objects = StateLogManager()
 
     class Meta:
         get_latest_by = 'timestamp'
 
+    class JSONAPIMeta:
+        resource_name = "statelog"
+
     def __str__(self):
-        # return '{} - {} - {}'.format(
-        #     self.timestamp,
-        #     self.content_object,
-        #     self.transition
-        # )
         return '{} - {}'.format(
             self.timestamp,
             self.transition
