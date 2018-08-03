@@ -60,9 +60,10 @@ class StateLog(models.Model):
         resource_name = "statelog"
 
     def __str__(self):
-        return '{} - {}'.format(
+        return '{} - {} - {}'.format(
             self.timestamp,
-            self.transition
+            self.content_object,
+            self.transition,
         )
 
     def get_state_display(self):
