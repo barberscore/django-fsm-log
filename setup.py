@@ -4,14 +4,20 @@ from setuptools import setup, find_packages
 
 setup(
     name='django-fsm-log',
-    version='1.6.0dev',
+    version='1.6.0.1',
     description='Logging for django-fsm',
     author='Gizmag',
     author_email='tech@gizmag.com',
     url='https://github.com/gizmag/django-fsm-log',
     license='MIT',
     packages=find_packages(),
-    install_requires=['django>=1.8', 'django_fsm>=2', 'django_appconf'],
+    install_requires=[
+        'django>=1.8',
+        'django_fsm>=2',
+        'django_appconf',
+        'djangorestframework',
+        'djangorestframework-jsonapi',
+    ],
     extras_require={
         'testing': [
             'pytest',
