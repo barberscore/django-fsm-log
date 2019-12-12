@@ -1,11 +1,11 @@
 # -*- coding:utf-8 -*-
 from __future__ import unicode_literals
+
 import uuid
 
 from django.contrib.contenttypes.fields import GenericForeignKey
 from django.contrib.contenttypes.models import ContentType
 from django.db import models
-from django.utils.encoding import force_text, python_2_unicode_compatible
 from django.utils.timezone import now
 from django_fsm import FSMFieldMixin, FSMIntegerField
 
@@ -13,7 +13,6 @@ from .conf import settings
 from .managers import StateLogManager
 
 
-@python_2_unicode_compatible
 class StateLog(models.Model):
     id = models.UUIDField(
         primary_key=True,
@@ -71,7 +70,7 @@ class StateLog(models.Model):
         for field in fsm_cls._meta.fields:
             if isinstance(field, FSMIntegerField):
                 state_display = dict(field.flatchoices).get(int(self.state), self.state)
-                return force_text(state_display, strings_only=True)
+                return str(state_display)
             elif isinstance(field, FSMFieldMixin):
                 state_display = dict(field.flatchoices).get(self.state, self.state)
-                return force_text(state_display, strings_only=True)
+                return str(state_display)
